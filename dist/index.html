@@ -14,10 +14,24 @@
       <button id="add-todo">Add Todo</button>
     </header>
     <div id="projects"></div>
-    <dialog>
+    <dialog id="projectForm">
       <form id="addProjectForm">
         <label for="title">Title:</label><br />
         <input type="text" id="title" name="title" /><br />
+        <button type="submit" class="submit">Submit</button>
+      </form>
+    </dialog>
+    <dialog id="todoForm">
+      <form id="addTodoForm">
+        <label for="title1">Title:</label><br />
+        <input type="text" id="title1" name="title1" /><br />
+        <label for="description">Description:</label><br />
+        <textarea type="text" id="description" name="description"></textarea
+        ><br />
+        <select id="projectDropdown">
+          Assign to:
+        </select>
+        <br />
         <button type="submit" class="submit">Submit</button>
       </form>
     </dialog>
