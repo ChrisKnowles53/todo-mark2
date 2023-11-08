@@ -21,16 +21,33 @@ function projectDisplay() {
 
     const todoList = document.createElement("ul");
 
-    project.todos.forEach((todo) => {
+    project.todos.forEach((todo, index) => {
       const todoListItem = document.createElement("li");
+
+      const listItemButton = document.createElement("button");
+      listItemButton.textContent = "More";
+      listItemButton.setAttribute("id", `${index}"more-button"`);
+
+      const todoDescription = document.createElement("p");
+      todoDescription.innerHTML = "";
+      todoDescription.textContent = todo.description;
+      todoDescription.style.display = "none";
+
+      listItemButton.addEventListener("click", () => {
+        if (todoDescription.style.display === "none") {
+          todoDescription.style.display = "block";
+          listItemButton.textContent = "Less";
+        } else {
+          todoDescription.style.display = "none";
+          listItemButton.textContent = "More";
+        }
+      });
 
       const todoTitle = document.createElement("p");
       todoTitle.textContent = todo.title;
 
-      const todoDescription = document.createElement("p");
-      todoDescription.textContent = todo.description;
-
       todoListItem.appendChild(todoTitle);
+      todoListItem.appendChild(listItemButton);
       todoListItem.appendChild(todoDescription);
 
       todoList.appendChild(todoListItem);
