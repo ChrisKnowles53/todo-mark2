@@ -12,14 +12,31 @@ function projectDisplay() {
   const projectDiv = document.getElementById("projects");
   projectDiv.innerHTML = "";
 
-  allProjects.forEach((project) => {
+  allProjects.forEach((project, index) => {
     const projectContainer = document.createElement("div");
     projectContainer.setAttribute("id", "project-container");
 
     const projectDivItem = document.createElement("div");
     projectDivItem.textContent = project.name;
 
+    const projectDisplayButton = document.createElement("button");
+    projectDisplayButton.textContent = "Expand";
+    projectDisplayButton.setAttribute("id", `${index}"project-button"`);
+
     const todoList = document.createElement("ul");
+    todoList.innerHTML = "";
+    todoList.style.display = "none";
+
+    projectDisplayButton.addEventListener("click", () => {
+      if (todoList.style.display === "none") {
+        todoList.style.display = "block";
+        projectDisplayButton.textContent = "Contract";
+      } else {
+        todoList.style.display = "none";
+        projectDisplayButton.textContent = "Expand";
+      }
+    });
+    projectDiv.appendChild(projectDisplayButton);
 
     project.todos.forEach((todo, index) => {
       const todoListItem = document.createElement("li");
