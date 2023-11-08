@@ -20,3 +20,4 @@ myProject.addTodo(todo1);
 myProject2.addTodo(todo2);
 
 export const allProjects = Project.allProjects;
+export default Project;

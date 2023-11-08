@@ -10,7 +10,16 @@
   <body>
     <header>
       <h1>Todo List</h1>
+      <button id="add-project">Add Project</button>
+      <button id="add-todo">Add Todo</button>
     </header>
     <div id="projects"></div>
+    <dialog>
+      <form id="addProjectForm">
+        <label for="title">Title:</label><br />
+        <input type="text" id="title" name="title" /><br />
+        <button type="submit" class="submit">Submit</button>
+      </form>
+    </dialog>
   </body>
 </html>
