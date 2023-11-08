@@ -1,10 +1,10 @@
-function component() {
-  const element = document.createElement("div");
+import "./styles.css";
+import { myProject } from "./classes/project";
 
-  // Lodash, currently included via a script, is required for this line to work
-  element.innerHTML = "ebpack Up and Running from index.js";
+const projectDiv = document.getElementById("projects");
+const todoTitleDiv = document.getElementById("todos");
+const todoDescriptionDiv = document.getElementById("todo-details");
 
-  return element;
-}
-
-document.body.appendChild(component());
+projectDiv.textContent = myProject.name;
+todoTitleDiv.textContent = myProject.todos[0].title;
+todoDescriptionDiv.textContent = myProject.todos[0].description;
