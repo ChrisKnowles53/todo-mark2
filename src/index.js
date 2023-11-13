@@ -8,70 +8,116 @@ updateProjectDropdown();
 
 console.log(allProjects);
 
+function createProjectContainer(project) {
+  const projectContainer = document.createElement("div");
+  projectContainer.setAttribute("id", "project-container");
+
+  const projectDivItem = document.createElement("div");
+  projectDivItem.textContent = project.name;
+
+  const projectDisplayButton = createProjectDisplayButton();
+
+  const todoList = createTodoList(project);
+
+  projectContainer.appendChild(projectDivItem);
+  projectContainer.appendChild(projectDisplayButton);
+  projectContainer.appendChild(todoList);
+
+  return projectContainer;
+}
+
+function createProjectDisplayButton() {
+  const projectDisplayButton = document.createElement("button");
+  projectDisplayButton.textContent = "Expand";
+
+  projectDisplayButton.addEventListener("click", () => {
+    const todoList = projectDisplayButton.nextElementSibling;
+    if (todoList.style.display === "none") {
+      todoList.style.display = "block";
+      projectDisplayButton.textContent = "Hide";
+    } else {
+      todoList.style.display = "none";
+      projectDisplayButton.textContent = "Expand";
+    }
+  });
+
+  return projectDisplayButton;
+}
+
+function createTodoList(project) {
+  const todoList = document.createElement("ul");
+  todoList.style.display = "none";
+
+  project.todos.forEach((todo, index) => {
+    const todoListItem = createTodoListItem(todo, index);
+    todoList.appendChild(todoListItem);
+  });
+  return todoList;
+}
+
+function createTodoListItem(todo, index) {
+  const todoListItem = document.createElement("li");
+  const todoTitle = document.createElement("p");
+  todoTitle.textContent = todo.title;
+
+  const listItemButton = createListItemButton(index, todoListItem);
+  const todoDecription = createTodoDescription(todo.description);
+  const editButton = createEditButton(todoDecription);
+
+  todoListItem.appendChild(todoTitle);
+  todoListItem.appendChild(listItemButton);
+  todoListItem.appendChild(editButton);
+  todoListItem.appendChild(todoDecription);
+
+  return todoListItem;
+}
+
+function createListItemButton() {
+  const listItemButton = document.createElement("button");
+  listItemButton.textContent = "More";
+
+  listItemButton.addEventListener("click", () => {
+    const todoDescription =
+      listItemButton.parentNode.querySelector(".todo-description");
+    if (todoDescription.style.display === "none") {
+      todoDescription.style.display = "block";
+      listItemButton.textContent = "Less";
+    } else {
+      todoDescription.style.display = "none";
+      listItemButton.textContent = "More";
+    }
+  });
+  return listItemButton;
+}
+
+function createTodoDescription(description) {
+  const todoDescription = document.createElement("p");
+  todoDescription.classList.add("todo-description");
+  todoDescription.textContent = description;
+  todoDescription.style.display = "none";
+  return todoDescription;
+}
+
+function createEditButton() {
+  const editButton = document.createElement("button");
+  editButton.textContent = "Edit";
+
+  editButton.addEventListener("click", () => {
+    console.log("edit button clicked");
+  });
+  //💥💥💥💥💥💥💥
+  //         // think about save and cancel
+  //         // Form or input fields - i think form like addTodo
+  //         // prepopulate with current details
+  return editButton;
+}
+
 function projectDisplay() {
   const projectDiv = document.getElementById("projects");
   projectDiv.innerHTML = "";
 
-  allProjects.forEach((project, index) => {
-    const projectContainer = document.createElement("div");
-    projectContainer.setAttribute("id", "project-container");
-
-    const projectDivItem = document.createElement("div");
-    projectDivItem.textContent = project.name;
-
-    const projectDisplayButton = document.createElement("button");
-    projectDisplayButton.textContent = "Expand";
-    projectDisplayButton.setAttribute("id", `${index}"project-button"`);
-
-    const todoList = document.createElement("ul");
-    todoList.innerHTML = "";
-    todoList.style.display = "none";
-
-    projectDisplayButton.addEventListener("click", () => {
-      if (todoList.style.display === "none") {
-        todoList.style.display = "block";
-        projectDisplayButton.textContent = "Contract";
-      } else {
-        todoList.style.display = "none";
-        projectDisplayButton.textContent = "Expand";
-      }
-    });
-    projectDiv.appendChild(projectDisplayButton);
-
-    project.todos.forEach((todo, index) => {
-      const todoListItem = document.createElement("li");
-
-      const listItemButton = document.createElement("button");
-      listItemButton.textContent = "More";
-      listItemButton.setAttribute("id", `${index}"more-button"`);
-
-      const todoDescription = document.createElement("p");
-      todoDescription.innerHTML = "";
-      todoDescription.textContent = todo.description;
-      todoDescription.style.display = "none";
-
-      listItemButton.addEventListener("click", () => {
-        if (todoDescription.style.display === "none") {
-          todoDescription.style.display = "block";
-          listItemButton.textContent = "Less";
-        } else {
-          todoDescription.style.display = "none";
-          listItemButton.textContent = "More";
-        }
-      });
-
-      const todoTitle = document.createElement("p");
-      todoTitle.textContent = todo.title;
-
-      todoListItem.appendChild(todoTitle);
-      todoListItem.appendChild(listItemButton);
-      todoListItem.appendChild(todoDescription);
-
-      todoList.appendChild(todoListItem);
-    });
-    projectContainer.appendChild(projectDivItem);
-    projectContainer.appendChild(todoList);
-
+  allProjects.forEach((project) => {
+    const projectContainer = createProjectContainer(project);
     projectDiv.appendChild(projectContainer);
   });
 }
@@ -92,7 +138,6 @@ function handleProjectFormSubmit(event) {
   const title = document.getElementById("title").value;
 
   new Project(title);
-  console.log(allProjects);
 
   projectDisplay();
   updateProjectDropdown();
@@ -102,7 +147,6 @@ function handleProjectFormSubmit(event) {
 
 const addTodoButton = document.getElementById("add-todo");
 addTodoButton.addEventListener("click", (event) => {
-  console.log("add todo button clicked");
   const dialog = document.getElementById("todoForm");
   dialog.showModal();
 });
@@ -115,21 +159,25 @@ function handleTodoFormSubmit(event) {
   const addTodoForm = document.getElementById("addTodoForm");
   const dialog = document.getElementById("todoForm");
 
-  const title = document.getElementById("title1").value;
+  const title = document.getElementById("todo-title").value;
   const description = document.getElementById("description").value;
   const selectedProject = document.getElementById("projectDropdown").value;
 
+  createNewTodo(title, description, selectedProject);
+  projectDisplay();
+  dialog.close();
+  addTodoForm.reset();
+}
+
+function createNewTodo(title, description, selectedProject) {
   const newTodo = new Todo(title, description, selectedProject);
+
   let projectForAddingTodo = allProjects.find(
     (project) => project.name === selectedProject
   );
   if (projectForAddingTodo) {
     projectForAddingTodo.addTodo(newTodo);
   }
-
-  projectDisplay();
-  dialog.close();
-  addTodoForm.reset();
 }
 
 function updateProjectDropdown() {
@@ -142,6 +190,3 @@ function updateProjectDropdown() {
     projectDropdown.appendChild(option);
   });
 }
-
-// thoughts if i find the project from allProjects and then apply the .todo function to that project
-// Project.addTodo();
