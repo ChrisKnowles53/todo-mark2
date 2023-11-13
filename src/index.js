@@ -60,15 +60,16 @@ function createTodoListItem(todo, index, project) {
   const todoTitle = document.createElement("p");
   todoTitle.textContent = todo.title;
 
+  const todoDescription = createTodoDescription(
+    todo.description,
+    project,
+    index,
+    todo
+  );
   const listItemButton = createListItemButton(index, todoListItem);
-  const todoDescription = createTodoDescription(todo.description);
-  const editButton = createEditButton(todo, index);
-  const deleteButton = createDeleteButton(project, index);
 
   todoListItem.appendChild(todoTitle);
-  todoListItem.appendChild(deleteButton);
   todoListItem.appendChild(listItemButton);
-  todoListItem.appendChild(editButton);
   todoListItem.appendChild(todoDescription);
 
   return todoListItem;
@@ -92,17 +93,22 @@ function createListItemButton() {
   return listItemButton;
 }
 
-function createTodoDescription(description) {
+function createTodoDescription(description, project, index, todo) {
   const todoDescription = document.createElement("p");
   todoDescription.classList.add("todo-description");
   todoDescription.textContent = description;
   todoDescription.style.display = "none";
 
+  const deleteButton = createDeleteButton(project, index);
+  const editButton = createEditButton(todo, index);
+
+  todoDescription.appendChild(deleteButton);
+  todoDescription.appendChild(editButton);
+
   return todoDescription;
 }
 
 function createEditButton(todo, index) {
-  console.log(todo);
   const editButton = document.createElement("button");
   editButton.textContent = "Edit";
   editButton.dataset.todoIndex = index;
@@ -226,12 +232,15 @@ function updateProjectDropdown() {
 
 function createDeleteButton(project, todoIndex) {
   const deleteButton = document.createElement("button");
-  deleteButton.textContent = "Delete";
+  deleteButton.textContent = "Delete Todo";
   deleteButton.dataset.todoIndex = todoIndex;
 
   deleteButton.addEventListener("click", () => {
-    project.todos.splice(todoIndex, 1);
-    projectDisplay();
+    const confimrDelete = confirm("Are you sure you want to delete this task?");
+    if (confimrDelete) {
+      project.todos.splice(todoIndex, 1);
+      projectDisplay();
+    }
   });
   return deleteButton;
 }
