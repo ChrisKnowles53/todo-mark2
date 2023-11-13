@@ -49,13 +49,13 @@ function createTodoList(project) {
   todoList.style.display = "none";
 
   project.todos.forEach((todo, index) => {
-    const todoListItem = createTodoListItem(todo, index);
+    const todoListItem = createTodoListItem(todo, index, project);
     todoList.appendChild(todoListItem);
   });
   return todoList;
 }
 
-function createTodoListItem(todo, index) {
+function createTodoListItem(todo, index, project) {
   const todoListItem = document.createElement("li");
   const todoTitle = document.createElement("p");
   todoTitle.textContent = todo.title;
@@ -63,8 +63,10 @@ function createTodoListItem(todo, index) {
   const listItemButton = createListItemButton(index, todoListItem);
   const todoDescription = createTodoDescription(todo.description);
   const editButton = createEditButton(todo, index);
+  const deleteButton = createDeleteButton(project, index);
 
   todoListItem.appendChild(todoTitle);
+  todoListItem.appendChild(deleteButton);
   todoListItem.appendChild(listItemButton);
   todoListItem.appendChild(editButton);
   todoListItem.appendChild(todoDescription);
@@ -95,16 +97,17 @@ function createTodoDescription(description) {
   todoDescription.classList.add("todo-description");
   todoDescription.textContent = description;
   todoDescription.style.display = "none";
+
   return todoDescription;
 }
 
 function createEditButton(todo, index) {
+  console.log(todo);
   const editButton = document.createElement("button");
   editButton.textContent = "Edit";
   editButton.dataset.todoIndex = index;
 
   editButton.addEventListener("click", () => {
-    updateEditProjectDropdown();
     const dialog = document.getElementById("editForm");
     const titleInput = document.getElementById("edit-title");
     const descriptionInput = document.getElementById("edit-description");
@@ -119,9 +122,7 @@ function createEditButton(todo, index) {
       const todoIndex = editButton.dataset.todoIndex;
       const updatedDescription = descriptionInput.value;
 
-      const selectedProject = document.getElementById(
-        "edit-projectDropdown"
-      ).value;
+      const selectedProject = todo.project;
       console.log("project selected", selectedProject);
       const projectForUpdatingTodo = allProjects.find(
         (project) => project.name === selectedProject
@@ -222,13 +223,15 @@ function updateProjectDropdown() {
     projectDropdown.appendChild(option);
   });
 }
-function updateEditProjectDropdown() {
-  const projectDropdown = document.getElementById("edit-projectDropdown");
-  projectDropdown.innerHTML = "";
 
-  allProjects.forEach((project, index) => {
-    const option = document.createElement("option");
-    option.innerText = project.name;
-    projectDropdown.appendChild(option);
+function createDeleteButton(project, todoIndex) {
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "Delete";
+  deleteButton.dataset.todoIndex = todoIndex;
+
+  deleteButton.addEventListener("click", () => {
+    project.todos.splice(todoIndex, 1);
+    projectDisplay();
   });
+  return deleteButton;
 }

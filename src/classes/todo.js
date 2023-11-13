@@ -11,8 +11,8 @@ class Todo {
   }
 }
 
-const todo1 = new Todo("1st Task", "Get the basics working");
-const todo2 = new Todo("2nd Task", "did this update project2");
+const todo1 = new Todo("1st Task", "Get the basics working", "Default Project");
+const todo2 = new Todo("2nd Task", "did this update project2", "2nd Project");
 
 export { todo1, todo2 };
 export default Todo;
