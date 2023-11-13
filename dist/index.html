@@ -32,7 +32,25 @@
           Assign to:
         </select>
         <br />
-        <button type="submit" class="submit">Submit</button>
+        <button type="submit" class="submit" id="submit">Submit</button>
+      </form>
+    </dialog>
+    <dialog id="editForm">
+      <form id="edit-Form">
+        <label for="todo-title">Title:</label><br />
+        <input type="text" id="edit-title" name="edit-title" /><br />
+        <label for="edit-description">Description:</label><br />
+        <textarea
+          type="text"
+          id="edit-description"
+          name="description"
+        ></textarea
+        ><br />
+        <select id="edit-projectDropdown">
+          Assign to:
+        </select>
+        <br />
+        <button type="submit" class="save" id="save">Save</button>
       </form>
     </dialog>
   </body>

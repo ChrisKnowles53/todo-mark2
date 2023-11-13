@@ -61,13 +61,13 @@ function createTodoListItem(todo, index) {
   todoTitle.textContent = todo.title;
 
   const listItemButton = createListItemButton(index, todoListItem);
-  const todoDecription = createTodoDescription(todo.description);
-  const editButton = createEditButton(todoDecription);
+  const todoDescription = createTodoDescription(todo.description);
+  const editButton = createEditButton(todo, index);
 
   todoListItem.appendChild(todoTitle);
   todoListItem.appendChild(listItemButton);
   todoListItem.appendChild(editButton);
-  todoListItem.appendChild(todoDecription);
+  todoListItem.appendChild(todoDescription);
 
   return todoListItem;
 }
@@ -98,17 +98,48 @@ function createTodoDescription(description) {
   return todoDescription;
 }
 
-function createEditButton() {
+function createEditButton(todo, index) {
   const editButton = document.createElement("button");
   editButton.textContent = "Edit";
+  editButton.dataset.todoIndex = index;
 
   editButton.addEventListener("click", () => {
-    console.log("edit button clicked");
+    updateEditProjectDropdown();
+    const dialog = document.getElementById("editForm");
+    const titleInput = document.getElementById("edit-title");
+    const descriptionInput = document.getElementById("edit-description");
+    const saveButton = document.getElementById("save");
+
+    titleInput.value = todo.title;
+    descriptionInput.value = todo.description;
+
+    saveButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      const updatedTitle = titleInput.value;
+      const todoIndex = editButton.dataset.todoIndex;
+      const updatedDescription = descriptionInput.value;
+
+      const selectedProject = document.getElementById(
+        "edit-projectDropdown"
+      ).value;
+      console.log("project selected", selectedProject);
+      const projectForUpdatingTodo = allProjects.find(
+        (project) => project.name === selectedProject
+      );
+
+      if (projectForUpdatingTodo && todoIndex !== undefined) {
+        const todoToUpdate = projectForUpdatingTodo.todos[todoIndex];
+        todoToUpdate.title = updatedTitle;
+        todoToUpdate.description = updatedDescription;
+        projectDisplay();
+      }
+
+      dialog.close();
+    });
+
+    dialog.showModal();
   });
-  //💥💥💥💥💥💥💥
-  //         // think about save and cancel
-  //         // Form or input fields - i think form like addTodo
-  //         // prepopulate with current details
+
   return editButton;
 }
 
@@ -143,6 +174,7 @@ function handleProjectFormSubmit(event) {
   updateProjectDropdown();
   dialog.close();
   addProjectForm.reset();
+  console.log(allProjects);
 }
 
 const addTodoButton = document.getElementById("add-todo");
@@ -182,6 +214,16 @@ function createNewTodo(title, description, selectedProject) {
 
 function updateProjectDropdown() {
   const projectDropdown = document.getElementById("projectDropdown");
+  projectDropdown.innerHTML = "";
+
+  allProjects.forEach((project, index) => {
+    const option = document.createElement("option");
+    option.innerText = project.name;
+    projectDropdown.appendChild(option);
+  });
+}
+function updateEditProjectDropdown() {
+  const projectDropdown = document.getElementById("edit-projectDropdown");
   projectDropdown.innerHTML = "";
 
   allProjects.forEach((project, index) => {
