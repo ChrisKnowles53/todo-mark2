@@ -261,3 +261,73 @@ function createDeleteButton(project, todoIndex) {
   });
   return deleteButton;
 }
+
+// create a button that when clicked hides project display and displays allTodos - when clicked again goes back to original view projectDisplay
+
+const showButton = document.getElementById("show-all-todos");
+const allTodosDiv = document.getElementById("todos-display");
+allTodosDiv.style.display = "none";
+showButton.addEventListener("click", () => {
+  if (allTodosDiv.style.display === "none") {
+    showButton.textContent = "Hide All Todos";
+    allTodosDiv.style.display = "block";
+    showAllToDos(allProjects);
+  } else {
+    showButton.textContent = "Show All Todo's";
+    allTodosDiv.style.display = "none";
+  }
+});
+
+function showAllToDos(allProjects) {
+  const projectContainers = document.querySelectorAll(".project-container");
+  projectContainers.forEach((container) => {
+    container.style.display = "none";
+  });
+
+  const allTodos = collectAllToDos(allProjects);
+  const todosTable = document.createElement("table");
+  todosTable.innerHTML = `
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Project</th>
+                <th>Due Date</th>
+            </tr>
+        `;
+
+  allTodos.forEach((todo) => {
+    const row = todosTable.insertRow();
+    row.innerHTML = `
+            <td>${todo.title}</td>
+            <td>${todo.description}</td>
+            <td>${todo.project}</td>
+            <td>${todo.dueDate}</td>
+            `;
+  });
+  const todosDisplay = document.getElementById("todos-display");
+  todosDisplay.innerHTML = "";
+  todosDisplay.appendChild(todosTable);
+}
+
+function collectAllToDos(allProjects) {
+  const allTodos = [];
+  allProjects.forEach((project) => {
+    project.todos.forEach((todo) => {
+      allTodos.push({
+        title: todo.title,
+        description: todo.description,
+        project: project.name,
+        dueDate: todo.date,
+      });
+    });
+  });
+
+  allTodos.sort((a, b) => compareDates(a.dueDate, b.dueDate));
+
+  return allTodos;
+}
+console.log(collectAllToDos(allProjects));
+
+function compareDates(date1, date2) {
+  return new Date(date1) - new Date(date2);
+}

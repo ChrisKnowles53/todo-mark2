@@ -1,3 +1,11 @@
+:root {
+    --green: #01b101; 
+    --yellow: #d9a405;
+    --blue: #007bff;
+    --offBlack: #333;
+    --white: #ffffff;
+}
+
 body {
     color: #ff0000
 }
@@ -7,6 +15,13 @@ button {
     font-family: sans-serif;
 }
 
+dialog {
+    background-color: var(--offBlack);
+    padding: 20px;
+}
+input, textarea, select {
+    margin-bottom: 10px
+}
 #todo-title-and-button, ul, #project-title-and-button{
     color: #008000;
     display: flex;
@@ -31,4 +46,20 @@ button {
     border-radius: 5px;
     border: none;
     padding: 5px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  table, th, td {
+    border: 2px solid var(--white);
+    border-radius: 15px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+  th {
+    color: var(--white);
   }
