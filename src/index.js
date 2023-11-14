@@ -41,7 +41,7 @@ function createProjectDisplayButton() {
       projectDisplayButton.textContent = "Hide ToDo's";
     } else {
       todoList.style.display = "none";
-      projectDisplayButton.textContent = "Show Todo's";
+      projectDisplayButton.textContent = "Show ToDo's";
     }
   });
 
@@ -169,12 +169,12 @@ function createEditButton(todo, index) {
 function projectDisplay() {
   const projectDiv = document.getElementById("projects");
   projectDiv.innerHTML = "";
+  console.log(allProjects);
 
   allProjects.forEach((project) => {
     const projectContainer = createProjectContainer(project);
     projectDiv.appendChild(projectContainer);
   });
-  console.log(allProjects);
 }
 
 const addProjectButton = document.getElementById("add-project");
@@ -198,7 +198,6 @@ function handleProjectFormSubmit(event) {
   updateProjectDropdown();
   dialog.close();
   addProjectForm.reset();
-  console.log(allProjects);
 }
 
 const addTodoButton = document.getElementById("add-todo");
