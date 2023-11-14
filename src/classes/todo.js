@@ -18,7 +18,12 @@ const todo1 = new Todo(
   "Default Project",
   "2023-11-24"
 );
-const todo2 = new Todo("2nd Task", "did this update project2", "2nd Project");
+const todo2 = new Todo(
+  "2nd Task",
+  "did this update project2",
+  "2nd Project",
+  "2023-11-30"
+);
 
 export { todo1, todo2 };
 export default Todo;
