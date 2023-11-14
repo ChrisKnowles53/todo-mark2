@@ -16,6 +16,7 @@ function createProjectContainer(project) {
 
   const projectDivItem = document.createElement("div");
   projectDivItem.textContent = project.name;
+  projectDivItem.setAttribute("id", "project-title");
 
   const projectDisplayButton = createProjectDisplayButton();
 
@@ -261,8 +262,6 @@ function createDeleteButton(project, todoIndex) {
   });
   return deleteButton;
 }
-
-// create a button that when clicked hides project display and displays allTodos - when clicked again goes back to original view projectDisplay
 
 const showButton = document.getElementById("show-all-todos");
 const allTodosDiv = document.getElementById("todos-display");
