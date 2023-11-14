@@ -143,6 +143,7 @@ function createTodoDescription(description, project, index, todo) {
   return todoDescription;
 }
 
+//💥 need this to write to local storage when it is updated
 function createEditButton(todo, index) {
   const editButton = document.createElement("button");
   editButton.textContent = "Edit";
@@ -154,12 +155,12 @@ function createEditButton(todo, index) {
     const descriptionInput = document.getElementById("edit-description");
     const dateInput = document.getElementById("edit-due-date");
     const saveButton = document.getElementById("save");
+    // saveButton.removeEventListener("click", handleSaveButtonClick);
 
     titleInput.value = todo.title;
     descriptionInput.value = todo.description;
     dateInput.value = todo.date;
-
-    saveButton.addEventListener("click", (event) => {
+    function handleSaveButtonClick(event) {
       event.preventDefault();
       const updatedTitle = titleInput.value;
       const todoIndex = editButton.dataset.todoIndex;
@@ -176,12 +177,15 @@ function createEditButton(todo, index) {
         todoToUpdate.title = updatedTitle;
         todoToUpdate.description = updatedDescription;
         todoToUpdate.date = updatedDate;
+
+        Project.saveArrayToLocalStorage();
         projectDisplay();
+        showAllToDos(allProjects);
+
+        dialog.close();
       }
-
-      dialog.close();
-    });
-
+    }
+    saveButton.addEventListener("click", handleSaveButtonClick);
     dialog.showModal();
   });
 
@@ -215,7 +219,6 @@ function handleProjectFormSubmit(event) {
   const title = document.getElementById("title").value;
 
   const newProject = new Project(title);
-  //   newProject.name.saveArrayToLocalStorage();
 
   projectDisplay();
   updateProjectDropdown();

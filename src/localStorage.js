@@ -7,6 +7,8 @@ function getArrayFromLocalStorage(key) {
   return storedData ? JSON.parse(storedData) : [];
 }
 
+export { saveArrayToLocalStorage, getArrayFromLocalStorage };
+
 // let accesKey = "toDoList123";
 // let array1 = [
 //   { id: 1, name: "1st ToDO" },
@@ -16,9 +18,3 @@ function getArrayFromLocalStorage(key) {
 // saveArrayToLocalStorage(accesKey, array1);
 // const retrievedData = getArrayFromLocalStorage(accesKey);
 // console.log(retrievedData);
-
-export { saveArrayToLocalStorage, getArrayFromLocalStorage };
-
-// so here the key can stay the same.
-// the array needs to be allProjects
-// the main code needs to retrieve and store the data using the above functions
