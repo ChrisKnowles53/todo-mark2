@@ -6,11 +6,12 @@ import {
   formatDistance,
   formatRelative,
   subDays,
+  parse,
 } from "date-fns";
 
 export default function dateFormat(date) {
-  return format(new Date(date), "dd-MM-yyyy");
-  //=> '2014-02-11'
+  return format(new Date(date), "E dd MM yyyy");
+  // takes in string 2014-11-02 outputs day Sun 02 11 2014
 }
 
 const dates = [
