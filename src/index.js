@@ -193,7 +193,8 @@ function handleProjectFormSubmit(event) {
 
   const title = document.getElementById("title").value;
 
-  new Project(title);
+  const newProject = new Project(title);
+  newProject.saveArrayToLocalStorage();
 
   projectDisplay();
   updateProjectDropdown();
@@ -222,6 +223,7 @@ function handleTodoFormSubmit(event) {
 
   createNewTodo(title, description, selectedProject, dueDate);
   projectDisplay();
+  showAllToDos(allProjects);
   dialog.close();
   addTodoForm.reset();
 }
@@ -232,8 +234,10 @@ function createNewTodo(title, description, selectedProject, date) {
   let projectForAddingTodo = allProjects.find(
     (project) => project.name === selectedProject
   );
-  if (projectForAddingTodo) {
+  if (projectForAddingTodo instanceof Project) {
     projectForAddingTodo.addTodo(newTodo);
+  } else {
+    console.error("project not found or not a valid instance");
   }
 }
 
@@ -325,7 +329,6 @@ function collectAllToDos(allProjects) {
 
   return allTodos;
 }
-console.log(collectAllToDos(allProjects));
 
 function compareDates(date1, date2) {
   return new Date(date1) - new Date(date2);
