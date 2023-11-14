@@ -3,11 +3,12 @@ import { allProjects } from "./classes/project";
 import Project from "./classes/project";
 import Todo from "./classes/todo";
 import dateFormat from "./datefns";
+import { saveArrayToLocalStorage } from "./localStorage";
 
 projectDisplay();
 updateProjectDropdown();
 
-function createProjectContainer(project) {
+function createProjectContainer(project, index) {
   const projectContainer = document.createElement("div");
   projectContainer.setAttribute("id", "project-container");
 
@@ -20,16 +21,36 @@ function createProjectContainer(project) {
 
   const projectDisplayButton = createProjectDisplayButton();
 
+  const projectDeleteButton = createProjectDeleteButton(allProjects, index);
+
   const todoList = createTodoList(project);
 
   projectTitleContainer.appendChild(projectDivItem);
   projectTitleContainer.appendChild(projectDisplayButton);
+  projectTitleContainer.appendChild(projectDeleteButton);
   projectContainer.appendChild(projectTitleContainer);
   projectContainer.appendChild(todoList);
 
   return projectContainer;
 }
 
+function createProjectDeleteButton(allProjects, projectIndex) {
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "Delete Project";
+
+  deleteButton.addEventListener("click", () => {
+    const confimrDelete = confirm(
+      "Are you sure you want to delete this project?"
+    );
+    if (confimrDelete) {
+      allProjects.splice(projectIndex, 1);
+      saveArrayToLocalStorage("projects", allProjects);
+      projectDisplay();
+      console.log(allProjects);
+    }
+  });
+  return deleteButton;
+}
 function createProjectDisplayButton() {
   const projectDisplayButton = document.createElement("button");
   projectDisplayButton.textContent = "Show ToDo's";
@@ -113,7 +134,7 @@ function createTodoDescription(description, project, index, todo) {
   todoDescription.classList.add("todo-description");
   todoDescription.innerHTML = `${description} <br> Due by ${displayedDueDate}`;
   todoDescription.style.display = "none";
-  const deleteButton = createDeleteButton(project, index);
+  const deleteButton = createTodoDeleteButton(project, index);
   const editButton = createEditButton(todo, index);
 
   todoDescription.appendChild(deleteButton);
@@ -172,8 +193,8 @@ function projectDisplay() {
   projectDiv.innerHTML = "";
   console.log(allProjects);
 
-  allProjects.forEach((project) => {
-    const projectContainer = createProjectContainer(project);
+  allProjects.forEach((project, index) => {
+    const projectContainer = createProjectContainer(project, index);
     projectDiv.appendChild(projectContainer);
   });
 }
@@ -252,7 +273,7 @@ function updateProjectDropdown() {
   });
 }
 
-function createDeleteButton(project, todoIndex) {
+function createTodoDeleteButton(project, todoIndex) {
   const deleteButton = document.createElement("button");
   deleteButton.textContent = "Delete Todo";
   deleteButton.dataset.todoIndex = todoIndex;
