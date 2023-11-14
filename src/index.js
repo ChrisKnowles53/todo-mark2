@@ -46,7 +46,7 @@ function createProjectDeleteButton(allProjects, projectIndex) {
       allProjects.splice(projectIndex, 1);
       saveArrayToLocalStorage("projects", allProjects);
       projectDisplay();
-      console.log(allProjects);
+      showAllToDos(allProjects);
     }
   });
   return deleteButton;
@@ -215,7 +215,7 @@ function handleProjectFormSubmit(event) {
   const title = document.getElementById("title").value;
 
   const newProject = new Project(title);
-  newProject.saveArrayToLocalStorage();
+  //   newProject.name.saveArrayToLocalStorage();
 
   projectDisplay();
   updateProjectDropdown();
