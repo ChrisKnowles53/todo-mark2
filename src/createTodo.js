@@ -150,10 +150,10 @@ function createTodoListItem(todo, index, project) {
   checkbox.id = `todo-complete-${index}`;
   checkbox.checked = todo.completed;
   checkbox.addEventListener("change", () => {
-    console.log(todo);
     todo.toggleCompleted();
     Project.saveArrayToLocalStorage();
     projectDisplay();
+    showAllToDos(allProjects);
   });
   const checkboxLabel = document.createElement("label");
   checkboxLabel.setAttribute("for", `todo-complete-${index}`);

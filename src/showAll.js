@@ -33,12 +33,14 @@ function collectAllToDos(allProjects) {
   const allTodos = [];
   allProjects.forEach((project) => {
     project.todos.forEach((todo) => {
-      allTodos.push({
-        title: todo.title,
-        description: todo.description,
-        project: project.name,
-        dueDate: todo.date,
-      });
+      if (!todo.completed) {
+        allTodos.push({
+          title: todo.title,
+          description: todo.description,
+          project: project.name,
+          dueDate: todo.date,
+        });
+      }
     });
   });
 
