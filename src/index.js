@@ -143,7 +143,6 @@ function createTodoDescription(description, project, index, todo) {
   return todoDescription;
 }
 
-//💥 need this to write to local storage when it is updated
 function createEditButton(todo, index) {
   const editButton = document.createElement("button");
   editButton.textContent = "Edit";
@@ -155,25 +154,27 @@ function createEditButton(todo, index) {
     const descriptionInput = document.getElementById("edit-description");
     const dateInput = document.getElementById("edit-due-date");
     const saveButton = document.getElementById("save");
-    // saveButton.removeEventListener("click", handleSaveButtonClick);
 
     titleInput.value = todo.title;
     descriptionInput.value = todo.description;
     dateInput.value = todo.date;
-    function handleSaveButtonClick(event) {
+
+    saveButton.removeEventListener("click", saveButton.handler);
+
+    saveButton.handler = function (event) {
       event.preventDefault();
+      const currentTodoIndex = parseInt(editButton.dataset.todoIndex);
       const updatedTitle = titleInput.value;
-      const todoIndex = editButton.dataset.todoIndex;
       const updatedDescription = descriptionInput.value;
       const updatedDate = dateInput.value;
-      const selectedProject = todo.project;
+      //   const selectedProject = todo.project;
 
       const projectForUpdatingTodo = allProjects.find(
-        (project) => project.name === selectedProject
+        (project) => project.name === todo.project
       );
 
-      if (projectForUpdatingTodo && todoIndex !== undefined) {
-        const todoToUpdate = projectForUpdatingTodo.todos[todoIndex];
+      if (projectForUpdatingTodo && currentTodoIndex !== undefined) {
+        const todoToUpdate = projectForUpdatingTodo.todos[currentTodoIndex];
         todoToUpdate.title = updatedTitle;
         todoToUpdate.description = updatedDescription;
         todoToUpdate.date = updatedDate;
@@ -181,11 +182,10 @@ function createEditButton(todo, index) {
         Project.saveArrayToLocalStorage();
         projectDisplay();
         showAllToDos(allProjects);
-
         dialog.close();
       }
-    }
-    saveButton.addEventListener("click", handleSaveButtonClick);
+    };
+    saveButton.addEventListener("click", saveButton.handler);
     dialog.showModal();
   });
 
@@ -260,6 +260,7 @@ function createNewTodo(title, description, selectedProject, date) {
   );
   if (projectForAddingTodo instanceof Project) {
     projectForAddingTodo.addTodo(newTodo);
+    Project.saveArrayToLocalStorage();
   } else {
     console.error("project not found or not a valid instance");
   }
