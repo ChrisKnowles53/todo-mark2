@@ -145,7 +145,6 @@ function createTodoDescription(description, project, index, todo) {
 
 function createTodoListItem(todo, index, project) {
   const todoListItem = document.createElement("li");
-
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.id = `todo-complete-${index}`;
@@ -159,7 +158,7 @@ function createTodoListItem(todo, index, project) {
   const checkboxLabel = document.createElement("label");
   checkboxLabel.setAttribute("for", `todo-complete-${index}`);
   checkboxLabel.setAttribute("id", "checkbox-label");
-  checkboxLabel.textContent = "Complete?";
+  checkboxLabel.textContent = "Completed ?";
   checkboxLabel.style.display = "block";
 
   const todoTitleContainer = document.createElement("p");
