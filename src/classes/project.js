@@ -1,4 +1,5 @@
 import { todo1, todo2 } from "./todo";
+import Todo from "./todo";
 import {
   saveArrayToLocalStorage,
   getArrayFromLocalStorage,
@@ -22,9 +23,13 @@ class Project {
 
 const storedProjects = getArrayFromLocalStorage("projects");
 if (storedProjects.length > 0) {
-  Project.allProjects = storedProjects.map(
-    (projectData) => new Project(projectData.name, projectData.todos)
-  );
+  Project.allProjects = storedProjects.map((projectData) => {
+    const project = new Project(projectData.name);
+    project.todos = projectData.todos.map((todoData) =>
+      Todo.fromData(todoData)
+    );
+    return project;
+  });
 } else {
   const myProject = new Project("Default Project");
   const myProject2 = new Project("2nd Project");

@@ -1,14 +1,24 @@
 // add other fields of dueDate, priority, notes
 class Todo {
-  constructor(title, description, project, date) {
+  constructor(title, description, project, date, completed = false) {
     this.title = title;
     this.description = description;
     this.project = project;
-    this.completed = false;
     this.date = date;
+    this.completed = completed;
   }
-  markAsCompleted() {
-    this.completed = true;
+  toggleCompleted() {
+    this.completed = !this.completed;
+  }
+  static fromData(data) {
+    const todo = new Todo(
+      data.title,
+      data.description,
+      data.project,
+      data.date,
+      data.completed
+    );
+    return todo;
   }
 }
 

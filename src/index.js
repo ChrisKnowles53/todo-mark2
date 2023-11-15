@@ -84,14 +84,35 @@ function createTodoList(project) {
 function createTodoListItem(todo, index, project) {
   const todoListItem = document.createElement("li");
 
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.id = `todo-complete-${index}`;
+  checkbox.checked = todo.completed;
+  checkbox.addEventListener("change", () => {
+    console.log(todo);
+    todo.toggleCompleted();
+    Project.saveArrayToLocalStorage();
+    projectDisplay();
+  });
+  const checkboxLabel = document.createElement("label");
+  checkboxLabel.setAttribute("for", `todo-complete-${index}`);
+  checkboxLabel.setAttribute("id", "checkbox-label");
+  checkboxLabel.textContent = "Complete?";
+  checkboxLabel.style.display = "block";
+
   const todoTitleContainer = document.createElement("p");
   todoTitleContainer.setAttribute("id", "todo-title-and-button");
 
   const todoTitle = document.createElement("p");
   todoTitle.textContent = todo.title;
+  if (todo.completed) {
+    todoTitle.classList.add("completed");
+  }
 
   const listItemButton = createListItemButton(index, todoListItem);
 
+  todoTitleContainer.prepend(checkbox);
+  todoTitleContainer.prepend(checkboxLabel);
   todoTitleContainer.appendChild(todoTitle);
   todoTitleContainer.appendChild(listItemButton);
 

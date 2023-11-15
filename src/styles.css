@@ -65,3 +65,11 @@ input, textarea, select {
   th {
     color: var(--white);
   }
+
+  .completed {
+    text-decoration: line-through;
+  }
+
+#checkbox-label {
+    font-size: 10px;
+}
