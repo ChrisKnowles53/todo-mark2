@@ -54,43 +54,51 @@ function createEditButton(todo, index) {
     const titleInput = document.getElementById("edit-title");
     const descriptionInput = document.getElementById("edit-description");
     const dateInput = document.getElementById("edit-due-date");
-    const saveButton = document.getElementById("save");
 
     titleInput.value = todo.title;
     descriptionInput.value = todo.description;
     dateInput.value = todo.date;
 
-    saveButton.removeEventListener("click", saveButton.handler);
-
-    saveButton.handler = function (event) {
-      event.preventDefault();
-      const currentTodoIndex = parseInt(editButton.dataset.todoIndex);
-      const updatedTitle = titleInput.value;
-      const updatedDescription = descriptionInput.value;
-      const updatedDate = dateInput.value;
-      //   const selectedProject = todo.project;
-
-      const projectForUpdatingTodo = allProjects.find(
-        (project) => project.name === todo.project
-      );
-
-      if (projectForUpdatingTodo && currentTodoIndex !== undefined) {
-        const todoToUpdate = projectForUpdatingTodo.todos[currentTodoIndex];
-        todoToUpdate.title = updatedTitle;
-        todoToUpdate.description = updatedDescription;
-        todoToUpdate.date = updatedDate;
-
-        Project.saveArrayToLocalStorage();
-        projectDisplay();
-        showAllToDos(allProjects);
-        dialog.close();
-      }
-    };
-    saveButton.addEventListener("click", saveButton.handler);
+    handleSaveButton(todo, editButton, dialog);
     dialog.showModal();
   });
 
   return editButton;
+}
+
+function handleSaveButton(todo, editButton, dialog) {
+  const saveButton = document.getElementById("save");
+  saveButton.removeEventListener("click", saveButton.handler);
+
+  saveButton.handler = function (event) {
+    event.preventDefault();
+    const currentTodoIndex = parseInt(editButton.dataset.todoIndex);
+    const titleInput = document.getElementById("edit-title");
+    const descriptionInput = document.getElementById("edit-description");
+    const dateInput = document.getElementById("edit-due-date");
+
+    const updatedTitle = titleInput.value;
+    const updatedDescription = descriptionInput.value;
+    const updatedDate = dateInput.value;
+    //   const selectedProject = todo.project;
+
+    const projectForUpdatingTodo = allProjects.find(
+      (project) => project.name === todo.project
+    );
+
+    if (projectForUpdatingTodo && currentTodoIndex !== undefined) {
+      const todoToUpdate = projectForUpdatingTodo.todos[currentTodoIndex];
+      todoToUpdate.title = updatedTitle;
+      todoToUpdate.description = updatedDescription;
+      todoToUpdate.date = updatedDate;
+
+      Project.saveArrayToLocalStorage();
+      projectDisplay();
+      showAllToDos(allProjects);
+      dialog.close();
+    }
+  };
+  saveButton.addEventListener("click", saveButton.handler);
 }
 
 function createTodoDeleteButton(project, todoIndex) {
