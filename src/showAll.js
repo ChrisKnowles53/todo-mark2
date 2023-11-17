@@ -8,9 +8,9 @@ export default function showAllToDos(allProjects) {
   const todosTable = document.createElement("table");
   todosTable.innerHTML = `
               <tr>
-                  <th>Title</th>
-                  <th>Description</th>
                   <th>Project</th>
+                  <th>Task</th>
+                  <th>Description</th>
                   <th>Due Date</th>
               </tr>
           `;
@@ -18,9 +18,9 @@ export default function showAllToDos(allProjects) {
   allTodos.forEach((todo) => {
     const row = todosTable.insertRow();
     row.innerHTML = `
+              <td>${todo.project}</td>
               <td>${todo.title}</td>
               <td>${todo.description}</td>
-              <td>${todo.project}</td>
               <td>${todo.dueDate}</td>
               `;
   });
